@@ -1,0 +1,23 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+license = "MIT"
+
+[[mods]]
+modId = "gradientglass"
+version = "1.0.0"
+displayName = "Gradient Glass"
+description = "Connects vanilla glass and panes and blends adjacent dyed glass."
+
+[[dependencies.gradientglass]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21.1,1.21.2)"
+ordering = "NONE"
+side = "CLIENT"
+
+[[dependencies.gradientglass]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1,21.2)"
+ordering = "NONE"
+side = "CLIENT"
