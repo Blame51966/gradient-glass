@@ -237,7 +237,7 @@ final class GlassMesh {
             writeUv(vertices, 2, sprite, 0.75f, 0.75f);
             writeUv(vertices, 3, sprite, 0.25f, 0.75f);
         }
-        quads.add(new BakedQuad(vertices, -1, face.normal, sprite, false, false));
+        quads.add(new BakedQuad(vertices, -1, face.normal, sprite, false, true));
     }
 
     private float writeVertex(int[] vertices, int index, Face face, float depth, float u, float v, boolean border) {

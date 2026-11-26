@@ -53,11 +53,11 @@ final class GradientGlassModel extends BakedModelWrapper<BakedModel> {
 
     @Override
     public TriState useAmbientOcclusion(BlockState state, ModelData data, RenderType renderType) {
-        return TriState.FALSE;
+        return data.has(NEIGHBORS) ? TriState.DEFAULT : originalModel.useAmbientOcclusion(state, data, renderType);
     }
 
     @Override
     public boolean useAmbientOcclusion() {
-        return false;
+        return true;
     }
 }
