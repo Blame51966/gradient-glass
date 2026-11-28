@@ -4,12 +4,13 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 
 final class GlassColors {
-    private final int tone;
+    private final Color solid;
     private final Color[] anchors;
     private final int tones;
 
-    GlassColors(GlassNeighborhood neighbors) {
-        tone = neighbors.center().tone();
+    GlassColors(GlassNeighborhood neighbors, GlassPalette palette) {
+        int tone = neighbors.center().tone();
+        solid = palette.color(tone);
         if (!neighbors.hasOtherTone()) {
             anchors = null;
             tones = 1 << tone;
@@ -30,7 +31,7 @@ final class GlassColors {
                     for (int remaining = cells; remaining != 0; remaining &= remaining - 1) {
                         var cell = neighbors.cell(Integer.numberOfTrailingZeros(remaining));
                         contributors |= 1 << cell.tone();
-                        var color = GlassPalette.color(cell.tone());
+                        var color = palette.color(cell.tone());
                         red += color.red();
                         green += color.green();
                         blue += color.blue();
@@ -106,7 +107,7 @@ final class GlassColors {
 
     Color sample(float x, float y, float z) {
         if (!mixed()) {
-            return GlassPalette.color(tone);
+            return solid;
         }
         int ix = x < 0.5f ? 0 : 1;
         int iy = y < 0.5f ? 0 : 1;
@@ -123,6 +124,10 @@ final class GlassColors {
     }
 
     record Color(float red, float green, float blue, float bodyAlpha, float borderAlpha) {
+        static Color fromRgb(int rgb, int bodyAlpha, int borderAlpha) {
+            return new Color(rgb >>> 16 & 255, rgb >>> 8 & 255, rgb & 255, bodyAlpha, borderAlpha);
+        }
+
         static Color lerp(float t, Color from, Color to) {
             return new Color(Mth.lerp(t, from.red, to.red), Mth.lerp(t, from.green, to.green),
                     Mth.lerp(t, from.blue, to.blue), Mth.lerp(t, from.bodyAlpha, to.bodyAlpha),
@@ -130,7 +135,15 @@ final class GlassColors {
         }
 
         int bakedColor() {
-            return 0xFF000000 | Math.round(blue) << 16 | Math.round(green) << 8 | Math.round(red);
+            return 0xFF000000 | rgbInAbgrOrder();
+        }
+
+        int pixel(boolean border) {
+            return Math.round(border ? borderAlpha : bodyAlpha) << 24 | rgbInAbgrOrder();
+        }
+
+        private int rgbInAbgrOrder() {
+            return Math.round(blue) << 16 | Math.round(green) << 8 | Math.round(red);
         }
     }
 }

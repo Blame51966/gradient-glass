@@ -23,7 +23,7 @@ final class GlassNeighborhood {
                 for (int x = -1; x <= 1; x++) {
                     scratch.set(pos.getX() + x, pos.getY() + y, pos.getZ() + z);
                     GlassCell cell = states.get(level.getBlockState(scratch));
-                    if (cell != null && settings.connects(cell.tone(), center.tone())) {
+                    if (cell != null && settings.groups().connects(cell.kind(), center.kind())) {
                         cells[index(x, y, z)] = cell;
                         otherTone |= cell.tone() != center.tone();
                     }

@@ -30,7 +30,7 @@ final class GlassMesh {
 
     GlassMesh(GlassNeighborhood neighbors, GlassPalette palette) {
         this.neighbors = neighbors;
-        this.colors = new GlassColors(neighbors);
+        this.colors = new GlassColors(neighbors, palette);
         this.paint = palette.paint(colors);
     }
 

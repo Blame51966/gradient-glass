@@ -4,7 +4,7 @@ license = "MIT"
 
 [[mods]]
 modId = "gradientglass"
-version = "1.0.0"
+version = "1.0.1"
 displayName = "Gradient Glass"
 description = "Connects vanilla glass and panes and blends adjacent dyed glass."
 
